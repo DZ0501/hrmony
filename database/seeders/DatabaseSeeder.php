@@ -12,13 +12,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(RoleSeeder::class);
-        $this->call(UserSeeder::class);
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            SettingSeeder::class,
+            TagSeeder::class,
+            RolesSeeder::class,
+            UserSeeder::class,
+            UserDetailSeeder::class,
+            PreferenceSeeder::class,
+            PreferenceUserSeeder::class,
+            QuestionSeeder::class,
+            PositionSeeder::class,
+            EmploymentTypeSeeder::class,
+            WorkModeSeeder::class,
+            WorkScheduleSeeder::class,
+            JobOfferSeeder::class,
+            JobOfferQuestionSeeder::class,
+            JobApplicationSeeder::class,
+            JobApplicationAnswerSeeder::class,
+            RequestSeeder::class,
+            WorkHourSeeder::class,
+            CompanyUpdateSeeder::class,
+            RequirementSeeder::class,
+            ResponsibilitySeeder::class,
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

@@ -10,12 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('job_applications', function (Blueprint $table) {
+        Schema::create('employment_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained(); // Links to user
-            $table->string('position_applied');
-            $table->text('self_description')->nullable();
-            $table->timestamps();
+            $table->enum('name', ['Employment Contract', 'Contract of Mandate', 'B2B', 'Internship']);
         });
     }
 
@@ -24,6 +21,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_applications');
+        Schema::dropIfExists('job_offer_employment_types');
     }
 };
