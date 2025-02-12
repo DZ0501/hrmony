@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Request;
 use Illuminate\Database\Seeder;
 
@@ -13,12 +12,17 @@ class RequestSeeder extends Seeder
      */
     public function run()
     {
+        $validTypes = ['leave', 'remote_work', 'personal_data_change', 'equipment_request'];
+
         for ($i = 1; $i <= 3; $i++) {
             Request::create([
-                'employee_id' => $i + 7,
-                'request_type' => ['leave', 'equipment', 'personal_info_update'][rand(0, 2)],
-                'stage' => 'submitted',
-                'details' => "Employee$i submitted a request.",
+                'user_id' => $i + 7,
+                'type' => $validTypes[array_rand($validTypes)], // Ensure a valid type
+                'status' => 'pending',
+                'details' => json_encode([
+                    'reason' => "Request details for Employee $i",
+                    'requested_at' => now()->toDateTimeString(),
+                ]),
             ]);
         }
     }

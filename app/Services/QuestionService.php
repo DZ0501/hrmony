@@ -11,7 +11,11 @@ class QuestionService
     {
         $query = Question::query();
 
-        if (isset($queryParams['include_tags']) && $queryParams['include_tags'] === 'true') {
+        if (!empty($queryParams['type']) && in_array($queryParams['type'], ['job_offer', 'evaluation'])) {
+            $query->where('type', $queryParams['type']);
+        }
+
+        if (!empty($queryParams['include_tags']) && $queryParams['include_tags'] === 'true') {
             $query->with('tags');
         }
 

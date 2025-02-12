@@ -18,7 +18,6 @@ class ResponsibilityService
         return $query->get();
     }
 
-
     public function getResponsibilityById(int $id): Responsibility
     {
         return Responsibility::findOrFail($id);

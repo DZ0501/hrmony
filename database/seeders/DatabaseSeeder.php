@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             RolesSeeder::class,
             UserSeeder::class,
-            UserDetailSeeder::class,
+            DepartmentSeeder::class,
             PreferenceSeeder::class,
             PreferenceUserSeeder::class,
             QuestionSeeder::class,
@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             EmploymentTypeSeeder::class,
             WorkModeSeeder::class,
             WorkScheduleSeeder::class,
+            UserDetailSeeder::class,
             JobOfferSeeder::class,
             JobOfferQuestionSeeder::class,
             JobApplicationSeeder::class,
@@ -34,6 +35,9 @@ class DatabaseSeeder extends Seeder
             CompanyUpdateSeeder::class,
             RequirementSeeder::class,
             ResponsibilitySeeder::class,
+            EquipmentTypeSeeder::class,
+            EquipmentSeeder::class,
+            EquipmentUsageSeeder::class,
         ]);
 
     }

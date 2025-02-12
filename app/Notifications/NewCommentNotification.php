@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Enums\SettingKey;
 use App\Models\Comment;
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -26,7 +27,7 @@ class NewCommentNotification extends Notification
 
     public function toMail($notifiable)
     {
-        $companyName = setting(SettingKey::COMPANY_NAME);
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
         $jobApplication = $this->comment->jobApplication;
         $commentAuthor = $this->comment->user->firstname;
 

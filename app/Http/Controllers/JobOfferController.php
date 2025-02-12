@@ -93,4 +93,18 @@ class JobOfferController extends Controller
             return new ApiErrorResponse($e, ['Failed to retrieve job offers.']);
         }
     }
+
+    public function publish(int $id): ApiErrorResponse|ApiSuccessResponse
+    {
+        try {
+            $jobOffer = $this->jobOfferService->publishJobOffer($id);
+
+            return new ApiSuccessResponse(
+                data: $jobOffer,
+                message: ['Job offer published successfully.']
+            );
+        } catch (Throwable $e) {
+            return new ApiErrorResponse($e, ['Failed to publish job offer.']);
+        }
+    }
 }

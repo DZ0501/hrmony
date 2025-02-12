@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Enums\SettingKey;
 use App\Models\JobApplication;
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -30,7 +31,7 @@ class JobApplicationStatusNotification extends Notification
     {
         $jobOffer = $this->jobApplication->jobOffer;
         $stage = $this->jobApplication->stage;
-        $companyName = setting(SettingKey::COMPANY_NAME);
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
 
         if ($this->status === 'passed') {
             $statusMessage = "Congratulations! Your application for the {$jobOffer->position->name} position has been accepted.";

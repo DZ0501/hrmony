@@ -9,7 +9,6 @@ use App\Models\JobApplication;
 use App\Models\JobApplicationAnswer;
 use App\Models\Comment;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class JobApplicationService
 {
@@ -102,26 +101,28 @@ class JobApplicationService
     public function updateReviewer(int $jobApplicationId, int $reviewerId): JobApplication
     {
         $jobApplication = JobApplication::findOrFail($jobApplicationId);
-
         $reviewer = User::findOrFail($reviewerId);
 
-        if ($jobApplication->stage === 'hr_review') {
-            if (!$reviewer->roles()->where('name', 'hr_employee')->exists()) {
-                throw new \Exception('Reviewer must have the HR Employee role.');
-            }
-        } elseif ($jobApplication->stage === 'department_head_review') {
-            if (!$reviewer->roles()->where('name', 'chief_of_department')->exists()) {
-                throw new \Exception('Reviewer must have the Head of Department role.');
-            }
-        } else {
-            throw new \Exception('Invalid stage for assigning a reviewer.');
+        $requiredRole = match ($jobApplication->stage) {
+            'hr_review' => 'hr_employee',
+            'department_head_review' => 'chief_of_department',
+            default => throw new \Exception('Invalid stage for assigning a reviewer.'),
+        };
+
+        $errorMessage = match ($requiredRole) {
+            'hr_employee' => 'Reviewer must have the HR Employee role.',
+            'chief_of_department' => 'Reviewer must have the Head of Department role.',
+        };
+
+        if (!$reviewer->roles()->where('name', $requiredRole)->exists()) {
+            throw new \Exception($errorMessage);
         }
 
-        $jobApplication->reviewer_id = $reviewerId;
-        $jobApplication->save();
+        $jobApplication->update(['reviewer_id' => $reviewerId]);
 
         return $jobApplication;
     }
+
 
     public function getApplicationById(int $id)
     {
@@ -169,6 +170,4 @@ class JobApplicationService
             ];
         });
     }
-
-
 }

@@ -11,12 +11,11 @@ use App\Http\Responses\ApiSuccessResponse;
 use App\Models\User;
 use App\Services\JobApplicationService;
 use Throwable;
-use Illuminate\Support\Facades\Storage;
 
 
 class JobApplicationController extends Controller
 {
-    protected $jobApplicationService;
+    protected JobApplicationService $jobApplicationService;
 
     public function __construct(JobApplicationService $jobApplicationService)
     {

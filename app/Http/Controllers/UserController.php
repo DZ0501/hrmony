@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssignDepartmentRequest;
+use App\Http\Requests\AssignPositionRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\ChangeUserRoleRequest;
@@ -153,6 +155,44 @@ class UserController extends Controller
             return new ApiErrorResponse(
                 exception: $e,
                 message: ['Failed to update user role.']
+            );
+        }
+    }
+
+    public function assignPosition(AssignPositionRequest $request, int $id): ApiSuccessResponse|ApiErrorResponse
+    {
+        try {
+            $validatedData = $request->validated();
+
+            $user = $this->userService->assignPosition($id, $validatedData['position_id'] ?? null);
+
+            return new ApiSuccessResponse(
+                data: $user->load('position'),
+                message: $validatedData['position_id']
+                ? ['Position assigned successfully.']
+                : ['Position removed successfully.']
+            );
+        } catch (\Throwable $e) {
+            return new ApiErrorResponse(
+                exception: $e,
+                message: ['Failed to update position.']
+            );
+        }
+    }
+
+    public function assignDepartment(AssignDepartmentRequest $request, int $id): ApiSuccessResponse|ApiErrorResponse
+    {
+        try {
+            $userDetail = $this->userService->assignDepartment($id, $request->validated('department_id'));
+
+            return new ApiSuccessResponse(
+                data: $userDetail->load('department'),
+                message: ['Department assigned successfully.']
+            );
+        } catch (\Throwable $e) {
+            return new ApiErrorResponse(
+                exception: $e,
+                message: ['Failed to assign department.']
             );
         }
     }

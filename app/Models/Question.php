@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'type'];
 
     public function jobOffers()
     {
@@ -15,6 +15,7 @@ class Question extends Model
             ->withPivot('order')
             ->orderBy('pivot_order');
     }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'question_tag');

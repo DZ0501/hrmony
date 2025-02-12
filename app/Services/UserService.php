@@ -3,16 +3,21 @@
 namespace App\Services;
 
 use App\Models\User;
-use DB;
+use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 use App\Traits\HandlesRelationships;
 
 
 class UserService
 {
     use HandlesRelationships;
+    protected UserCreationService $userCreationService;
+
+    public function __construct(UserCreationService $userCreationService)
+    {
+        $this->userCreationService = $userCreationService;
+    }
+
     public function getAllUsers(array $queryParams = [])
     {
         $query = User::query();
@@ -33,30 +38,7 @@ class UserService
 
     public function createUser(array $data): User
     {
-        return DB::transaction(function () use ($data) {
-            $user = User::create([
-                'email' => $data['email'],
-                'firstname' => $data['firstname'],
-                'surname' => $data['surname'],
-                'password' => Hash::make($data['password']),
-                'email_verified_at' => now(),
-            ]);
-
-            $user->assignRole($data['role']);
-
-            $user->userDetails()->create([
-                'sex' => $data['sex'],
-                'department' => $data['department'] ?? null,
-                'position' => $data['position'] ?? null,
-                'address' => $data['address'],
-                'address2' => $data['address2'] ?? null,
-                'city' => $data['city'],
-                'postcode' => $data['postcode'],
-                'phone_no' => $data['phone_no'],
-            ]);
-
-            return $user;
-        });
+        return $this->userCreationService->createUser($data, $data['role']);
     }
 
     public function updateUser(int $id, array $data): User
@@ -101,5 +83,23 @@ class UserService
     {
         $user = User::findOrFail($id);
         $user->syncRoles([$role]);
+    }
+
+    public function assignPosition(int $userId, ?int $positionId): UserDetail
+    {
+        $userDetails = UserDetail::where('user_id', $userId)->firstOrFail();
+        $userDetails->position_id = $positionId;
+        $userDetails->save();
+
+        return $userDetails;
+    }
+
+    public function assignDepartment(int $userId, int $departmentId): UserDetail
+    {
+        $userDetail = UserDetail::where('user_id', $userId)->firstOrFail();
+        $userDetail->department_id = $departmentId;
+        $userDetail->save();
+
+        return $userDetail;
     }
 }

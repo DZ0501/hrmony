@@ -3,12 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\JobOfferPublished;
-use App\Jobs\SendJobOfferNotification;
+use App\Jobs\SendJobOfferNotificationJob;
 
 class SendJobOfferNotificationListener
 {
     public function handle(JobOfferPublished $event): void
     {
-        SendJobOfferNotification::dispatch($event->jobOffer);
+        SendJobOfferNotificationJob::dispatch($event->jobOffer);
     }
 }

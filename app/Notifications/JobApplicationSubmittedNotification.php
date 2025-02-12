@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Enums\SettingKey;
 use App\Models\JobApplication;
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -25,7 +26,7 @@ class JobApplicationSubmittedNotification extends Notification
 
     public function toMail($notifiable)
     {
-        $companyName = setting(SettingKey::COMPANY_NAME);
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
         $jobOffer = $this->jobApplication->jobOffer;
 
         return (new MailMessage)

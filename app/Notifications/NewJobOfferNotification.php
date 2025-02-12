@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Enums\SettingKey;
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -27,7 +28,7 @@ class NewJobOfferNotification extends Notification
     public function toMail($notifiable)
     {
         $jobOffer = $this->jobOffer->load('position');
-        $companyName = setting(SettingKey::COMPANY_NAME);
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
         $jobOfferLink = url('/job-offers/' . $this->jobOffer->id);
 
         return (new MailMessage)

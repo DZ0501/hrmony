@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserRegistered;
-use App\Jobs\SendWelcomeEmail;
+use App\Jobs\SendWelcomeEmailJob;
 
 class SendWelcomeEmailListener
 {
@@ -11,6 +11,6 @@ class SendWelcomeEmailListener
     {
         $user = $event->user;
 
-        SendWelcomeEmail::dispatch($user);
+        SendWelcomeEmailJob::dispatch($user);
     }
 }

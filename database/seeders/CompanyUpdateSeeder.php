@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\CompanyUpdate;
-
+use Illuminate\Database\Seeder;
 
 class CompanyUpdateSeeder extends Seeder
 {
@@ -14,16 +12,15 @@ class CompanyUpdateSeeder extends Seeder
      */
     public function run()
     {
-        CompanyUpdate::create([
-            'title' => 'New Year Holiday Policy',
-            'content' => 'The office will remain closed on January 1st for the New Year.',
-            'published' => true,
-        ]);
+        for ($i = 1; $i <= 5; $i++) {
+            $update = CompanyUpdate::create([
+                'title' => "Update $i",
+                'content' => "This is the content for update $i.",
+                'published' => rand(0, 1),
+                'created_by' => rand(2, 5),
+            ]);
 
-        CompanyUpdate::create([
-            'title' => 'Remote Work Guidelines',
-            'content' => 'All employees can request remote work days up to 3 times a month.',
-            'published' => true,
-        ]);
+            $update->tags()->attach([rand(1, 3), rand(4, 6)]);
+        }
     }
 }

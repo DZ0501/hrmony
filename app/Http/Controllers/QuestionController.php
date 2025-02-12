@@ -37,6 +37,7 @@ class QuestionController extends Controller
         }
     }
 
+
     public function show(int $id): ApiSuccessResponse|ApiErrorResponse
     {
         try {

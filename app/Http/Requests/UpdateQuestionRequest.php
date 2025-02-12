@@ -15,6 +15,7 @@ class UpdateQuestionRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'type' => 'sometimes|string|in:job_offer,evaluation',
         ];
     }
 }

@@ -5,35 +5,22 @@ namespace App\Services;
 use App\Events\PasswordResetRequested;
 use App\Events\UserRegistered;
 use App\Models\User;
-use App\Models\UserDetail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
+    protected UserCreationService $userCreationService;
+
+    public function __construct(UserCreationService $userCreationService)
+    {
+        $this->userCreationService = $userCreationService;
+    }
+
     public function registerUser(array $data): User
     {
-        $user = User::create([
-            'email' => $data['email'],
-            'firstname' => $data['firstname'],
-            'surname' => $data['surname'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        $user->assignRole('candidate');
-
-        UserDetail::create([
-            'user_id' => $user->id,
-            'sex' => $data['sex'],
-            'department' => $data['department'] ?? null,
-            'position' => $data['position'] ?? null,
-            'address' => $data['address'],
-            'address2' => $data['address2'] ?? null,
-            'city' => $data['city'],
-            'postcode' => $data['postcode'],
-            'phone_no' => $data['phone_no'],
-        ]);
+        $user = $this->userCreationService->createUser($data, 'candidate');
 
         $this->attachDefaultPreferences($user);
 

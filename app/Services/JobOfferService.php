@@ -32,12 +32,25 @@ class JobOfferService
     }
 
 
-    public function publishJobOffer(JobOffer $jobOffer): void
+    public function publishJobOffer(int $id): JobOffer
     {
-        $jobOffer->update(['published' => true]);
+        return DB::transaction(function () use ($id) {
+            $jobOffer = JobOffer::findOrFail($id);
 
-        JobOfferPublished::dispatch($jobOffer);
+            if ($jobOffer->published) {
+                throw ValidationException::withMessages([
+                    'published' => ['This job offer is already published.'],
+                ]);
+            }
+
+            $jobOffer->update(['published' => true]);
+
+            JobOfferPublished::dispatch($jobOffer);
+
+            return $jobOffer;
+        });
     }
+
 
     public function updateJobOffer(int $id, array $data): JobOffer
     {

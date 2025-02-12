@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -20,9 +21,7 @@ class SendEmailVerification extends Notification
 
     public function toMail($notifiable)
     {
-        $companyName = setting(SettingKey::COMPANY_NAME);
-
-        // Generate the email verification link
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)

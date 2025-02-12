@@ -18,7 +18,6 @@ return new class extends Migration {
 
             $table->unique(['user_id', 'preference_id']);
         });
-
     }
 
     /**

@@ -12,9 +12,10 @@ return new class extends Migration {
     {
         Schema::create('company_updates', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->text('content');
             $table->boolean('published')->default(false);
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 
             $table->index('published');

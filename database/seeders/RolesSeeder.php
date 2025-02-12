@@ -51,6 +51,9 @@ class RolesSeeder extends Seeder
                 'manage all job offers',
                 'manage users',
             ],
+            'inactive' => [
+                'none',
+            ],
         ];
 
         // Create roles and assign permissions

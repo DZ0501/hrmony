@@ -3,13 +3,24 @@
 namespace App\Providers;
 
 
+use App\Events\AttendanceBonusesCalculated;
+use App\Events\CompanyUpdatePublished;
+use App\Events\EvaluationAssigned;
 use App\Events\JobApplicationStatusUpdated;
 use App\Events\JobApplicationSubmitted;
 use App\Events\NewCommentAdded;
+use App\Events\NewRequestSubmitted;
+use App\Events\RequestStatusUpdated;
+use App\Listeners\AssignFirstUserAsAdminListener;
+use App\Listeners\NotifyAttendanceBonusesListener;
 use App\Listeners\NotifyTeamOfNewCommentListener;
+use App\Listeners\SendCompanyUpdateNotificationListener;
+use App\Listeners\SendEvaluationAssignedNotificationListener;
 use App\Listeners\SendJobApplicationStatusNotificationListener;
 use App\Listeners\SendJobApplicationSubmissionNotificationListener;
+use App\Listeners\SendNewRequestNotificationListener;
 use App\Listeners\SendPasswordResetLinkListener;
+use App\Listeners\SendRequestStatusNotificationListener;
 use App\Listeners\SendWelcomeEmailListener;
 use App\Listeners\SendJobOfferNotificationListener;
 use Illuminate\Auth\Events\Registered;
@@ -34,6 +45,7 @@ class EventServiceProvider extends ServiceProvider
 
         UserRegistered::class => [
             SendWelcomeEmailListener::class,
+            AssignFirstUserAsAdminListener::class,
         ],
 
         PasswordResetRequested::class => [
@@ -54,6 +66,26 @@ class EventServiceProvider extends ServiceProvider
 
         NewCommentAdded::class => [
             NotifyTeamOfNewCommentListener::class,
+        ],
+
+        AttendanceBonusesCalculated::class => [
+            NotifyAttendanceBonusesListener::class,
+        ],
+
+        EvaluationAssigned::class => [
+            SendEvaluationAssignedNotificationListener::class,
+        ],
+
+        CompanyUpdatePublished::class => [
+            SendCompanyUpdateNotificationListener::class,
+        ],
+
+        RequestStatusUpdated::class => [
+            SendRequestStatusNotificationListener::class,
+        ],
+
+        NewRequestSubmitted::class => [
+            SendNewRequestNotificationListener::class,
         ],
     ];
 

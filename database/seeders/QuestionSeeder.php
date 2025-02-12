@@ -42,5 +42,12 @@ class QuestionSeeder extends Seeder
                 'name' => $question,
             ]);
         }
+
+        Question::insert([
+            ['name' => 'How do you rate your communication skills?', 'type' => 'evaluation'],
+            ['name' => 'How do you rate your problem-solving abilities?', 'type' => 'evaluation'],
+            ['name' => 'How do you rate your teamwork?', 'type' => 'evaluation'],
+        ]);
+
     }
 }

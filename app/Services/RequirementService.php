@@ -18,11 +18,6 @@ class RequirementService
         return $query->get();
     }
 
-    public function getAllRequirementsWithTags(): Collection
-    {
-        return Requirement::with('tags')->get();
-    }
-
     public function getRequirementById(int $id): Requirement
     {
         return Requirement::with('tags')->findOrFail($id);

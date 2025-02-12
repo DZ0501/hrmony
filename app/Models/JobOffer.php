@@ -25,6 +25,7 @@ class JobOffer extends Model
     public function question()
     {
         return $this->belongsToMany(Question::class, 'job_offer_question')
+            ->where('type', 'job_offer')
             ->withPivot('order')
             ->orderBy('pivot_order');
     }

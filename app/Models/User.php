@@ -15,22 +15,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $guard_name = 'api';
 
-    public function jobApplications()
-    {
-        return $this->hasMany(JobApplication::class);
-    }
-
-    public function userDetails()
-    {
-        return $this->hasOne(UserDetail::class);
-    }
-
-    public function preferences()
-    {
-        return $this->belongsToMany(Preference::class, 'preference_user')
-            ->withPivot('value');
-    }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -62,4 +46,30 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+
+    public function userDetails()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
+
+    public function preferences()
+    {
+        return $this->belongsToMany(Preference::class, 'preference_user')
+            ->withPivot('value');
+    }
+
+    public function subordinates()
+    {
+        return $this->hasMany(UserDetail::class, 'manager_id');
+    }
+    public function workHours()
+    {
+        return $this->hasMany(WorkHour::class, 'user_id');
+    }
 }

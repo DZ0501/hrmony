@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -24,7 +25,7 @@ class PasswordResetNotification extends Notification
 
     public function toMail($notifiable)
     {
-        $companyName = setting(SettingKey::COMPANY_NAME);
+        $companyName = app(SettingService::class)->get(SettingKey::COMPANY_NAME);
         $url = url(config('app.url') . "/password/reset/{$this->token}");
 
         return (new MailMessage)

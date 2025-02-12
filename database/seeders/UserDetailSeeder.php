@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\UserDetail;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class UserDetailSeeder extends Seeder
 {
@@ -13,14 +13,26 @@ class UserDetailSeeder extends Seeder
      */
     public function run()
     {
-        // Populate User details for existing Users (IDs 8-10)
-        for ($i = 8; $i <= 10; $i++) {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $managerId = null;
+
+            if ($user->hasRole('employee')) {
+                $managerId = User::role('chief_of_department')
+                    ->orWhere('role', 'hr_employee')
+                    ->inRandomOrder()
+                    ->first()->id;
+            }
+
             UserDetail::create([
-                'user_id' => $i,
-                'sex' => ['male', 'female'][rand(0,1)],
-                'department' => ['Engineering', 'HR', 'Sales'][rand(0, 2)], // Random departments
-                'position' => ['Developer', 'Manager', 'Analyst'][rand(0, 2)], // Random positions
+                'user_id' => $user->id,
+                'manager_id' => $managerId,
+                'sex' => ['male', 'female'][rand(0, 1)],
+                'department_id' => rand(1, 5),
+                'position_id' => rand(1, 5),
                 'address' => '123 Main St',
+                'address2' => null,
                 'city' => 'Sample City',
                 'postcode' => '12345',
                 'phone_no' => '123-456-7890',

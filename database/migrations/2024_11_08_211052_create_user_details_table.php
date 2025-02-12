@@ -12,10 +12,11 @@ return new class extends Migration {
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade'); // Foreign key to users table
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
+            $table->foreignId('manager_id')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('sex', ['male', 'female']);
-            $table->string('department')->nullable();
-            $table->string('position')->nullable();
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('set null');
             $table->string('address', 50);
             $table->string('address2', 50)->nullable();
             $table->string('city', 50);

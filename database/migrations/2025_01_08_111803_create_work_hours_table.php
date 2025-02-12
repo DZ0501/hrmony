@@ -12,13 +12,14 @@ return new class extends Migration {
     {
         Schema::create('work_hours', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade');
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('date');
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
             $table->decimal('total_hours', 5, 2)->nullable();
             $table->timestamps();
 
-            $table->index(['start', 'end']);
+            $table->unique(['user_id', 'date']);
         });
     }
 
